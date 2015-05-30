@@ -33,7 +33,7 @@ struct server {
         );
     }
 
-    enum { max_length = 30 };
+    enum { max_length = 100 };
     char data_[max_length];
     boost::asio::io_service& io_service_;
     boost::asio::ip::udp::endpoint ep;
