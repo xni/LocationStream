@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -27,7 +28,7 @@ struct server {
     void handle_receive_from(const boost::system::error_code& error,
                              size_t bytes_recvd) {
         const LocationStream::PositionMessage *positionMessage = LocationStream::GetPositionMessage(data_);
-        std::cout << "Received a message "
+        std::cout << "Received a message " << std::setprecision(10)
                   << positionMessage->timestamp() << ", "
                   << positionMessage->pos()->lat() << ", "
                   << positionMessage->pos()->lon() << '\n';
