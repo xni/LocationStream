@@ -26,7 +26,7 @@ struct server {
 
     void handle_receive_from(const boost::system::error_code& error,
                              size_t bytes_recvd) {
-        LocationStream::PositionMessage *positionMessage = LocationStream::GetPositionMessage(data_);
+        const LocationStream::PositionMessage *positionMessage = LocationStream::GetPositionMessage(data_);
         std::cout << "Received a message "
                   << positionMessage->timestamp() << ", "
                   << positionMessage->pos()->lat() << ", "
