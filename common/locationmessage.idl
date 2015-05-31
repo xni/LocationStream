@@ -1,0 +1,14 @@
+namespace LocationStream;
+
+struct Position {
+  lon:double;
+  lat:double;
+}
+
+table PositionMessage {
+  pos:Position;
+  phone:string;
+  timestamp:long;
+}
+
+root_type PositionMessage;
