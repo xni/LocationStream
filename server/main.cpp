@@ -6,6 +6,8 @@
 #include <chrono>
 #include <thread>
 
+#include "locationmessage_generated.h"
+
 using namespace std;
 
 
@@ -24,7 +26,11 @@ struct server {
 
     void handle_receive_from(const boost::system::error_code& error,
                              size_t bytes_recvd) {
-        std::cout << "Received a message " << data_ << "\n";
+        LocationStream::PositionMessage *positionMessage = LocationStream::GetPositionMessage(data_);
+        std::cout << "Received a message "
+                  << positionMessage->timestamp() << ", "
+                  << positionMessage->pos()->lat() << ", "
+                  << positionMessage->pos()->lon() << '\n';
 
         socket_.async_receive_from(
                 boost::asio::buffer(data_, max_length),
