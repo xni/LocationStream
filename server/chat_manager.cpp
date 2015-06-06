@@ -25,6 +25,12 @@ void disconnectCallback(const redisAsyncContext *c, int status) {
     printf("Disconnected...\n");
 }
 
+void getCallback(redisAsyncContext *c, void *r, void *privdata) {
+    redisReply *reply = r;
+    if (reply == NULL) return;
+    printf("argv[%s]: %s\n", (char*)privdata, reply->str);
+}
+
 int main() {
     signal(SIGPIPE, SIG_IGN);
 
@@ -39,6 +45,7 @@ int main() {
     redisAsyncSetConnectCallback(c,connectCallback);
     redisAsyncSetDisconnectCallback(c,disconnectCallback);
 
+    redisAsyncCommand(c, getCallback, (char*)"end-1", "SUBSCRIBE name");
     ev_loop(EV_DEFAULT_ 0);
     return 0;
 }
