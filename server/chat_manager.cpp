@@ -38,5 +38,7 @@ int main() {
     redisLibevAttach(EV_DEFAULT_ c);
     redisAsyncSetConnectCallback(c,connectCallback);
     redisAsyncSetDisconnectCallback(c,disconnectCallback);
+
+    ev_loop(EV_DEFAULT_ 0);
     return 0;
 }
