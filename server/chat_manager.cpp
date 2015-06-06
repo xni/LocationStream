@@ -28,7 +28,7 @@ void disconnectCallback(const redisAsyncContext *c, int status) {
 void getCallback(redisAsyncContext *c, void *r, void *privdata) {
     redisReply *reply = (redisReply*)r;
     if (reply == NULL) return;
-    printf("argv[%s]: %s\n", (char*)privdata, reply->str);
+    printf("argv[%s]: %d %s\n", (char*)privdata, reply->type, reply->str);
 }
 
 int main() {
