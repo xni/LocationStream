@@ -14,7 +14,7 @@ target_link_libraries(LocationStreamServer ${Boost_LIBRARIES})
 
 
 set(CHAT_MANAGER_FILES chat_manager.cpp)
-find_library(HIREDIS REQUIRED)
+find_package(HIREDIS REQUIRED)
 include_directories(${HIREDIS_INCLUDE_DIR})
 add_executable(ChatManager ${CHAT_MANAGER_FILES})
 target_link_libraries(ChatManager ${HIREDIS_LIBRARY})
