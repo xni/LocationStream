@@ -32,7 +32,7 @@ void getCallback(redisAsyncContext *c, void *r, void *privdata) {
     if ( reply->type == REDIS_REPLY_ARRAY && reply->elements == 3 ) {
         if ( strcmp( reply->element[0]->str, "subscribe" ) != 0 ) {
             printf( "Received[%s] channel %s: %s\n",
-                    (char*)priv,
+                    (char*)privdata,
                     reply->element[1]->str,
                     reply->element[2]->str );
         }
