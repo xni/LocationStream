@@ -4,6 +4,7 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <hiredis.h>
 #include <async.h>
@@ -28,7 +29,14 @@ void disconnectCallback(const redisAsyncContext *c, int status) {
 void getCallback(redisAsyncContext *c, void *r, void *privdata) {
     redisReply *reply = (redisReply*)r;
     if (reply == NULL) return;
-    printf("argv[%s]: %d %s\n", (char*)privdata, reply->type, reply->str);
+    if ( reply->type == REDIS_REPLY_ARRAY && reply->elements == 3 ) {
+        if ( strcmp( reply->element[0]->str, "subscribe" ) != 0 ) {
+            printf( "Received[%s] channel %s: %s\n",
+                    (char*)priv,
+                    reply->element[1]->str,
+                    reply->element[2]->str );
+        }
+    }
 }
 
 int main() {
@@ -45,7 +53,7 @@ int main() {
     redisAsyncSetConnectCallback(c,connectCallback);
     redisAsyncSetDisconnectCallback(c,disconnectCallback);
 
-    redisAsyncCommand(c, getCallback, (char*)"end-1", "SUBSCRIBE name");
+    redisAsyncCommand(c, getCallback, (char*)"sub", "SUBSCRIBE name");
     ev_loop(EV_DEFAULT_ 0);
     return 0;
 }
