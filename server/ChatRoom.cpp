@@ -17,7 +17,7 @@
 ChatRoom::ChatRoom(redisAsyncContext* context,
                    const Participants& participants) :
     _participants(participants) {
-  void (*callback)(redisAsyncContext*, void*, void*) = boost::bind(&ChatRoom::ParticipantMovedCallback, *this);
+  void (*callback)(redisAsyncContext*, void*, void*) = boost::bind(&ChatRoom::ParticipantMovedCallback, this);
   for (const auto& participant : _participants) {
     // TODO: check that channel name contains only letters.
     std::ostringstream command;
