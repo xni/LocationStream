@@ -17,13 +17,15 @@
 ChatRoom::ChatRoom(redisAsyncContext* context,
                    const Participants& participants) :
     _participants(participants) {
-  void (*callback)(redisAsyncContext*, void*, void*) = boost::bind(&ChatRoom::ParticipantMovedCallback, this);
   for (const auto& participant : _participants) {
     // TODO: check that channel name contains only letters.
     std::ostringstream command;
     command << "SUBSCRIBE ";
     command << participant;
-    redisAsyncCommand(context, callback, (char*) "sub", command.str().c_str());
+    redisAsyncCommand(context,
+                      mem_fun(&ChatRoom::ParticipantMovedCallback),
+                      (char*) "sub",
+                      command.str().c_str());
   }
 }
 
