@@ -10,6 +10,8 @@
 #include <async.h>
 #include <adapters/libev.h>
 
+#include "ChatRoom.h"
+
 void connectCallback(const redisAsyncContext *c, int status) {
     if (status != REDIS_OK) {
         printf("Error: %s\n", c->errstr);
@@ -53,7 +55,8 @@ int main() {
     redisAsyncSetConnectCallback(c,connectCallback);
     redisAsyncSetDisconnectCallback(c,disconnectCallback);
 
-    redisAsyncCommand(c, getCallback, (char*)"sub", "SUBSCRIBE name");
+    // redisAsyncCommand(c, getCallback, (char*)"sub", "SUBSCRIBE name");
+    new ChatRoom(c, {"79153060652", "79030072726", "79853672651"});
     ev_loop(EV_DEFAULT_ 0);
     return 0;
 }
