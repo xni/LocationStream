@@ -23,7 +23,7 @@ ChatRoom::ChatRoom(redisAsyncContext* context,
     command << "SUBSCRIBE ";
     command << participant;
     redisAsyncCommand(context,
-                      mem_fun(&ChatRoom::ParticipantMovedCallback),
+                      std::mem_fun(&ChatRoom::ParticipantMovedCallback),
                       (char*) "sub",
                       command.str().c_str());
   }
