@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 #include <functional>
-#include <ostringstream>
+#include <sstream>
 
 
 ChatRoom::ChatRoom(redisAsyncContext* context,
