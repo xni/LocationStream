@@ -17,7 +17,8 @@ class ChatRoom {
   ChatRoom(redisAsyncContext* context, const Participants& participants);
 
  private:
-  void ParticipantMovedCallback(redisAsyncContext* context, void* reply, void* privdata);
+  static void CallbackWrapper(redisAsyncContext* context, void* reply, void* privdata);
+  void ParticipantMovedCallback();
   void SendUpdates(const char* const initiator, const char* const position);
   const Participants _participants;
 

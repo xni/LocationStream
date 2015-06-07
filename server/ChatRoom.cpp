@@ -22,17 +22,13 @@ ChatRoom::ChatRoom(redisAsyncContext* context,
     std::ostringstream command;
     command << "SUBSCRIBE ";
     command << participant;
-    redisAsyncCommand(context,
-                      std::mem_fun(&ChatRoom::ParticipantMovedCallback),
-                      (char*) "sub",
+    redisAsyncCommand(context, &ChatRoom::CallbackWrapper, this,
                       command.str().c_str());
   }
 }
 
-void ChatRoom::ParticipantMovedCallback(redisAsyncContext* context,
-                                        void* r,
-                                        void* /* privdata */) {
-  redisReply *reply = (redisReply*)r;
+void ChatRoom::ParticipantMovedCallback(redisAsyncContext* context, void* r) {
+  redisReply* reply = (redisReply*)r;
   if (reply == NULL)
     return;
   if (reply->type == REDIS_REPLY_ARRAY && reply->elements == 3) {
@@ -49,4 +45,10 @@ void ChatRoom::SendUpdates(const char* const initiator,
       continue;
     printf("Sending info about %s to %s\n", initiator, participant.c_str());
   }
+}
+
+// static
+void ChatRoom::CallbackWrapper(redisAsyncContext* context, void* reply,
+                               void* privdata) {
+  ((ChatRoom*)privdata)->ParticipantMovedCallback(context, reply);
 }
