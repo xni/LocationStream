@@ -15,7 +15,7 @@
 ChatRoom::ChatRoom(redisAsyncContext* context,
                    const Participants& participants) :
     _participants(participants) {
-  auto callback = std::bind(&ChatRoom::ParticipantMovedCallback, *this);
+  redisCallbackFn callback = std::bind(&ChatRoom::ParticipantMovedCallback, *this);
   for (const auto& participant : _participants) {
     # TODO: check that channel name contains only letters.
     std::ostringstream command;
@@ -26,7 +26,7 @@ ChatRoom::ChatRoom(redisAsyncContext* context,
 }
 
 void ChatRoom::ParticipantMovedCallback(redisAsyncContext* context,
-                                        void* reply,
+                                        void* r,
                                         void* /* privdata */) {
   redisReply *reply = (redisReply*)r;
   if (reply == NULL)
