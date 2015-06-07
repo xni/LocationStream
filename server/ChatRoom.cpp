@@ -11,13 +11,15 @@
 #include <functional>
 #include <sstream>
 
+#include <boost/bind.hpp>
+
 
 ChatRoom::ChatRoom(redisAsyncContext* context,
                    const Participants& participants) :
     _participants(participants) {
-  void (*callback)(redisAsyncContext*, void*, void*) = std::bind(&ChatRoom::ParticipantMovedCallback, *this);
+  void (*callback)(redisAsyncContext*, void*, void*) = boost::bind(&ChatRoom::ParticipantMovedCallback, *this);
   for (const auto& participant : _participants) {
-    # TODO: check that channel name contains only letters.
+    // TODO: check that channel name contains only letters.
     std::ostringstream command;
     command << "SUBSCRIBE ";
     command << participant;
